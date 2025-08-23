@@ -1,0 +1,78 @@
+{
+	"name": "html-essentials",
+	"displayName": "HTML-Essentials",
+	"description": "Web Design essential extensions for visual studio code",
+	"icon": "img/essentials.png",
+	"galleryBanner": {
+		"color": "#01524A",
+		"theme": "dark"
+	},
+	"license": "LICENSE.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Gydunhn/HTML-Essentials.git"
+	},
+	"keywords": [
+		"VSC",
+		"VSCode",
+		"Visual Studio",
+		"Visual Studio Code",
+		"VSC Essentials",
+		"Essentials",
+		"Esenciales",
+		"Essenciais",
+		"Essentiel",
+		"Essenziali",
+		"Essentielles",
+		"Esencajoj",
+		"必需品",
+		"골자",
+		"अत्यावश्यकम्",
+		"ملزومات",
+		"Web",
+		"Design",
+		"WebDesign",
+		"Web Design",
+		"HTML",
+		"CSS",
+		"HTML CSS Support",
+		"Tag",
+		"Auto Complete Tag",
+		"Snippets",
+		"CSS Snippets",
+		"Color",
+		"Color Highlight",
+		"Color Picker",
+		"Highlight",
+		"Matching Tag",
+		"Stylelint",
+		"HTML-validate",
+		"CSS Peek",
+		"Gydunhn",
+		"Elite"
+	],
+	"version": "1.0.0",
+	"publisher": "Gydunhn",
+	"engines": {
+		"vscode": "^1.35.0"
+	},
+	"categories": [
+		"Extension Packs"
+	],
+	"extensionPack": [
+		"ecmel.vscode-html-css",
+		"formulahendry.auto-complete-tag",
+		"vincaslt.highlight-matching-tag",
+		"naumovs.color-highlight",
+		"html-validate.vscode-html-validate",
+		"pranaygp.vscode-css-peek",
+		"joy-yu.css-snippets",
+		"anseki.vscode-color",
+		"stylelint.vscode-stylelint"
+	],
+	"__metadata": {
+		"installedTimestamp": 1755198261290,
+		"targetPlatform": "universal",
+		"size": 65915
+	}
+}

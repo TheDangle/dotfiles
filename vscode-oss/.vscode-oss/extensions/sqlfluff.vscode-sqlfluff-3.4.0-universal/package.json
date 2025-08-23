@@ -1,0 +1,494 @@
+{
+	"name": "vscode-sqlfluff",
+	"displayName": "sqlfluff",
+	"version": "3.4.0",
+	"description": "A linter and auto-formatter for SQLfluff, a popular linting tool for SQL and dbt.",
+	"publisher": "sqlfluff",
+	"icon": "images/icon.png",
+	"engines": {
+		"vscode": "^1.63.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"homepage": "https://github.com/sqlfluff/vscode-sqlfluff",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sqlfluff/vscode-sqlfluff"
+	},
+	"bugs": {
+		"url": "https://github.com/sqlfluff/vscode-sqlfluff/issues"
+	},
+	"license": "MIT",
+	"keywords": [
+		"sqlfluff",
+		"dbt",
+		"sql",
+		"sql-bigquery",
+		"jinja-sql",
+		"postgres",
+		"snowflake-sql"
+	],
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"main": "./out/src/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "sqlfluff.debug",
+				"title": "SQLFluff Debug Extension"
+			},
+			{
+				"command": "sqlfluff.fix",
+				"title": "SQLFluff Fix",
+				"enablement": "editorLangId in sqlfluff.formatLanguages"
+			},
+			{
+				"command": "sqlfluff.format.selection",
+				"title": "SQLFluff Format Selection",
+				"enablement": "editorLangId in sqlfluff.formatLanguages && editorHasSelection"
+			},
+			{
+				"command": "sqlfluff.lint",
+				"title": "SQLFluff Lint",
+				"enablement": "editorLangId in sqlfluff.formatLanguages"
+			},
+			{
+				"command": "sqlfluff.lintProject",
+				"title": "SQLFluff Lint Project"
+			},
+			{
+				"command": "sqlfluff.showOutputChannel",
+				"title": "SQLFluff Show Output Channel",
+				"enablement": "editorLangId in sqlfluff.formatLanguages"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "sqlfluff.format.selection",
+					"group": "1_modification@10",
+					"when": "editorLangId in sqlfluff.contextLanguages && editorHasSelection"
+				}
+			]
+		},
+		"configuration": {
+			"properties": {
+				"sqlfluff.config": {
+					"scope": "resource",
+					"type": "string",
+					"default": "",
+					"description": "Specify an additional configuration file that overrides the standard configuration files."
+				},
+				"sqlfluff.environmentVariables": {
+					"scope": "resource",
+					"type": "array",
+					"default": [
+						{
+							"key": "EXAMPLE_KEY",
+							"value": "example_value"
+						}
+					],
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": [
+							"key",
+							"value"
+						],
+						"properties": {
+							"key": {
+								"type": "string",
+								"markdownDescription": "The key for the environment variable."
+							},
+							"value": {
+								"type": "string",
+								"markdownDescription": "The value for the environment variable."
+							}
+						}
+					},
+					"markdownDescription": "DEPRECATED: Use sqlfluff.env.environmentVariables"
+				},
+				"sqlfluff.executablePath": {
+					"scope": "resource",
+					"type": "string",
+					"default": "sqlfluff",
+					"description": "Points to the sqlfluff executable."
+				},
+				"sqlfluff.dialect": {
+					"scope": "resource",
+					"type": "string",
+					"enum": [
+						"",
+						"ansi",
+						"athena",
+						"bigquery",
+						"clickhouse",
+						"databricks",
+						"db2",
+						"duckdb",
+						"exasol",
+						"greenplum",
+						"hive",
+						"materialize",
+						"mysql",
+						"oracle",
+						"postgres",
+						"redshift",
+						"snowflake",
+						"soql",
+						"sparksql",
+						"sqlite",
+						"teradata",
+						"trino",
+						"tsql",
+						"vertica"
+					],
+					"default": "",
+					"description": "The dialect of SQL to lint."
+				},
+				"sqlfluff.excludeRules": {
+					"scope": "resource",
+					"type": "array",
+					"default": [],
+					"description": "Exclude specific rules. The excludedRules from the global settings and workspace settings are combined."
+				},
+				"sqlfluff.ignoreLocalConfig": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": false,
+					"description": "Ignore config files in default search path locations. Can be used with config to only reference the custom config file."
+				},
+				"sqlfluff.ignoreParsing": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": false,
+					"description": "Determines if the sql linter should ignore parsing errors."
+				},
+				"sqlfluff.rules": {
+					"scope": "resource",
+					"type": "array",
+					"default": [],
+					"description": "Narrow the search to only specific rules. The rules from the global settings and workspace settings are combined."
+				},
+				"sqlfluff.shell": {
+					"scope": "resource",
+					"type": [
+						"boolean",
+						"string"
+					],
+					"default": false,
+					"markdownDescription": "Set the shell for the child process. This can be set to false (limited shell features), true (shell features such as the `dir` command), or the path to the shell executable."
+				},
+				"sqlfluff.suppressNotifications": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": false,
+					"description": "Hide notification messages. The output channel will still be populated."
+				},
+				"sqlfluff.workingDirectory": {
+					"scope": "resource",
+					"type": "string",
+					"default": "",
+					"markdownDescription": "Set the working directory for the `sqlfluff lint` and `sqlfluff fix` commands. Use an absolute path (can use variables if necessary). This defaults to the root path of the workspace. This setting should only be changed if absolutely necessary."
+				},
+				"sqlfluff.codeActions.excludeRules.workspace": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Determines if the `Exclude Rule <rule> from Workspace Settings` code action is enabled."
+				},
+				"sqlfluff.codeActions.excludeRules.global": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Determines if the `Exclude Rule <rule> from Global Settings` code action is enabled."
+				},
+				"sqlfluff.codeActions.noqa": {
+					"scope": "resource",
+					"type": [
+						"array",
+						"boolean"
+					],
+					"default": [
+						"AM03",
+						"AM04",
+						"AM06",
+						"CP03",
+						"CP04",
+						"CP05",
+						"CV03",
+						"CV10",
+						"ST01",
+						"ST02",
+						"ST04",
+						"ST05",
+						"ST06",
+						"ST07",
+						"ST08",
+						"LT04",
+						"LT06",
+						"LT10"
+					],
+					"markdownDescription": "Set the rules that will not show the `noqa` code actions. Set this to `false` to disable all `noqa` code actions."
+				},
+				"sqlfluff.env.environmentVariables": {
+					"scope": "resource",
+					"type": "array",
+					"default": [
+						{
+							"key": "EXAMPLE_KEY",
+							"value": "example_value"
+						}
+					],
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": [
+							"key",
+							"value"
+						],
+						"properties": {
+							"key": {
+								"type": "string",
+								"markdownDescription": "The key for the environment variable."
+							},
+							"value": {
+								"type": "string",
+								"markdownDescription": "The value for the environment variable."
+							}
+						}
+					},
+					"markdownDescription": "Set the environment variables for the linter and formatter."
+				},
+				"sqlfluff.env.customDotEnvFiles": {
+					"scope": "resource",
+					"type": "array",
+					"default": [],
+					"description": "Load the .env file from the specified paths."
+				},
+				"sqlfluff.env.useDotEnvFile": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": false,
+					"description": "Load the .env file from the working directory."
+				},
+				"sqlfluff.format.arguments": {
+					"scope": "resource",
+					"type": "array",
+					"default": [],
+					"markdownDescription": "This is useful for setting extra arguments for the `sqlfluff fix` command. Include `--force` if running sqlfluff < 3.0.0."
+				},
+				"sqlfluff.format.enabled": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"description": "Determines if the document formatter is enabled."
+				},
+				"sqlfluff.format.languages": {
+					"scope": "resource",
+					"type": "array",
+					"default": [
+						"sql",
+						"sql-bigquery",
+						"jinja-sql",
+						"postgres",
+						"snowflake-sql"
+					],
+					"items": {
+						"type": [
+							"string",
+							"object"
+						],
+						"additionalProperties": false,
+						"required": [
+							"language",
+							"contextMenuFormatOptions",
+							"preserveLeadingWhitespace"
+						],
+						"properties": {
+							"language": {
+								"type": "string",
+								"markdownDescription": "The language to enable formatting for."
+							},
+							"contextMenuFormatOptions": {
+								"type": "boolean",
+								"default": true,
+								"markdownDescription": "Show a SQLFluff option in the context menu."
+							},
+							"preserveLeadingWhitespace": {
+								"type": "boolean",
+								"default": false,
+								"markdownDescription": "Only works with `Format on Selection`. Preserve whitespace based on the first line of the selection."
+							}
+						}
+					},
+					"description": "The languages formatting is enabled for."
+				},
+				"sqlfluff.experimental.format.executeInTerminal": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": false,
+					"markdownDescription": "Determines if the `sqlfluff fix` command overwrites the file contents instead of this extension. You should not change the file contents while formatting is occurring if this is enabled. May lead to problems if `editor.formatOnSave = true`. This allows formatting to work when the templater is set to dbt. This can help solve [Mojibake](https://en.wikipedia.org/wiki/Mojibake) issues."
+				},
+				"sqlfluff.linter.arguments": {
+					"scope": "resource",
+					"type": "array",
+					"default": [],
+					"markdownDescription": "This is useful for setting extra arguments for the `sqlfluff lint` command."
+				},
+				"sqlfluff.linter.delay": {
+					"scope": "resource",
+					"type": "number",
+					"default": 100,
+					"markdownDescription": "Set the delay (milliseconds) before running the linter when using `sqlfluff.linter.run = 'onType'`."
+				},
+				"sqlfluff.linter.diagnosticSeverity": {
+					"scope": "resource",
+					"type": "string",
+					"enum": [
+						"error",
+						"warning",
+						"information",
+						"hint"
+					],
+					"default": "error",
+					"markdownDescription": "Set the default diagnostic severity of the linting results."
+				},
+				"sqlfluff.linter.diagnosticSeverityByRule": {
+					"scope": "resource",
+					"type": "array",
+					"default": [],
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": [
+							"rule",
+							"severity"
+						],
+						"properties": {
+							"rule": {
+								"type": "string",
+								"markdownDescription": "The specific rule for the diagnostic severity."
+							},
+							"severity": {
+								"type": "string",
+								"enum": [
+									"error",
+									"warning",
+									"information",
+									"hint"
+								],
+								"markdownDescription": "Set the diagnostic severity for the given rule."
+							}
+						}
+					},
+					"markdownDescription": "Set the diagnostic severity of individual linting results."
+				},
+				"sqlfluff.linter.lintEntireProject": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": false,
+					"markdownDescription": "Determines if the linter will lint the workspaces on startup and configuration changes. Does not work with `dbt-core-interface`."
+				},
+				"sqlfluff.linter.languages": {
+					"scope": "resource",
+					"type": "array",
+					"default": [
+						"sql",
+						"sql-bigquery",
+						"jinja-sql",
+						"postgres",
+						"snowflake-sql"
+					],
+					"description": "The languages linting is enabled for."
+				},
+				"sqlfluff.linter.run": {
+					"scope": "resource",
+					"type": "string",
+					"enum": [
+						"onType",
+						"onSave",
+						"off"
+					],
+					"default": "onType",
+					"description": "Determines if the linter runs on save, on type, or disabled.",
+					"markdownEnumDescriptions": [
+						"Run the linter when the document is typed in. Does not work when the templater is set to dbt.",
+						"Run the linter when the document is saved.",
+						"Do not run the linter."
+					]
+				},
+				"sqlfluff.dbtInterface.enabled": {
+					"scope": "resource",
+					"type": "boolean",
+					"default": false,
+					"markdownDescription": "Enable this if `dbt-core-interface` is installed. This disables all other options except for `sqlfluff.config`."
+				},
+				"sqlfluff.dbtInterface.host": {
+					"scope": "resource",
+					"type": "string",
+					"default": "localhost",
+					"description": "The host for the dbt-interface server."
+				},
+				"sqlfluff.dbtInterface.port": {
+					"scope": "resource",
+					"type": "number",
+					"default": 8581,
+					"description": "The port for the dbt-interface server."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run -S esbuild-base -- --minify",
+		"compile": "rimraf out && tsc -p ./ && npm run postbuild",
+		"watch": "rimraf out && tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "node ./out/test/runTest.js",
+		"download-api": "vscode-dts dev",
+		"postdownload-api": "vscode-dts main",
+		"lint": "eslint src --ext ts",
+		"fix": "eslint src --ext ts --fix",
+		"format": "prettier \"**/*.{js,ts,tsx}\" --write",
+		"format:check": "prettier \"**/*.{js,ts,tsx}\" --check",
+		"esbuild-base": "rimraf out && esbuild ./src/extension.ts --bundle --outfile=out/src/extension.js --external:vscode --format=cjs --keep-names --platform=node",
+		"esbuild": "npm run -S esbuild-base -- --sourcemap",
+		"esbuild-watch": "npm run -S esbuild-base -- --sourcemap --watch",
+		"postbuild": "copyfiles \"./test/suite/test_sql/**/*.sql\" \"./out\" && copyfiles \"./test/.sqlfluff\" \"./out\" && copyfiles copyfiles \"./test/.vscode/settings.json\" \"./out\"",
+		"deploy": "vsce publish",
+		"build-vsix": "vsce package"
+	},
+	"dependencies": {
+		"dotenv": "^16.4.5",
+		"node-abort-controller": "^2.0.0",
+		"node-fetch": "^2.6.7"
+	},
+	"devDependencies": {
+		"@types/mocha": "^10.0.1",
+		"@types/node": "^20.4.2",
+		"@types/node-fetch": "^2.6.4",
+		"@types/vscode": "1.63.0",
+		"@typescript-eslint/eslint-plugin": "^7.16.0",
+		"@typescript-eslint/parser": "^7.16.0",
+		"@vscode/dts": "^0.4.1",
+		"@vscode/test-electron": "^2.4.1",
+		"@vscode/vsce": "^2.29.0",
+		"copyfiles": "^2.4.1",
+		"esbuild": "^0.23.0",
+		"eslint": "^8.45.0",
+		"eslint-config-prettier": "^8.10.0",
+		"eslint-plugin-import": "^2.29.1",
+		"eslint-plugin-simple-import-sort": "^12.1.1",
+		"eslint-plugin-tsdoc": "^0.3.0",
+		"glob": "^11.0.0",
+		"mocha": "^10.6.0",
+		"typescript": "^5.5.3"
+	},
+	"__metadata": {
+		"installedTimestamp": 1755787278203,
+		"targetPlatform": "universal",
+		"size": 2253438
+	}
+}

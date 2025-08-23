@@ -1,0 +1,9 @@
+[sqlfluff]
+dialect = postgres
+warnings = AM04
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.identifiers]
+extended_capitalisation_policy = lower

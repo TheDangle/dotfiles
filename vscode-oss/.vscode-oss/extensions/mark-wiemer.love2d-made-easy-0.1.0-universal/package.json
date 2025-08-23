@@ -1,0 +1,257 @@
+{
+	"name": "love2d-made-easy",
+	"displayName": "Love2d Made Easy by Rainbow Coding Lab",
+	"description": "Love2d autocomplete and launch game button as well as some code generators, authored by Rainbow Coding Lab",
+	"version": "0.1.0",
+	"publisher": "mark-wiemer",
+	"icon": "images/love2deasy_128.png",
+	"main": "./out/extension.js",
+	"license": "ISC",
+	"homepage": "https://github.com/mark-wiemer/love2d-made-easy",
+	"engines": {
+		"vscode": "^1.51.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mark-wiemer/love2d-made-easy.git"
+	},
+	"categories": [
+		"Programming Languages",
+		"Other",
+		"Visualization"
+	],
+	"keywords": [
+		"game",
+		"lua",
+		"code generator",
+		"love2d",
+		"shortcut",
+		"shortcuts",
+		"menu",
+		"menubar",
+		"tool",
+		"toolbar",
+		"status",
+		"editor",
+		"bar",
+		"shortcut menu bar",
+		"button"
+	],
+	"activationEvents": [
+		"onLanguage:lua"
+	],
+	"contributes": {
+		"keybindings": [
+			{
+				"command": "loveme.openDocumentation",
+				"key": "Ctrl+Alt+D"
+			},
+			{
+				"command": "loveme.launch",
+				"key": "Alt+L"
+			}
+		],
+		"configuration": [
+			{
+				"title": "Love2d Made Easy",
+				"properties": {
+					"Windows Love2d Path": {
+						"type": "string",
+						"default": "C:\\Program Files\\LOVE\\love.exe",
+						"description": "Love2d exe file path in Windows"
+					},
+					"Unix Love2d Path": {
+						"type": "string",
+						"default": "love",
+						"description": "Love2d exe file path in Unix"
+					},
+					"Save active file": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Save file'"
+					},
+					"Navigate back": {
+						"type": "boolean",
+						"default": true,
+						"description": "show icon for 'Nagivate back'"
+					},
+					"Navigate forward": {
+						"type": "boolean",
+						"default": true,
+						"description": "show icon for 'Nagivate forward'"
+					},
+					"Switch header source": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Switch header/source'"
+					},
+					"Beautify active file": {
+						"type": "boolean",
+						"default": true,
+						"description": "show icon for 'Beautify/Format document'"
+					},
+					"Toggle render whitespace": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Toggle render whitespace'"
+					},
+					"Open files list": {
+						"type": "boolean",
+						"default": true,
+						"description": "show icon for 'Open files list'"
+					},
+					"Toggle terminal": {
+						"type": "boolean",
+						"default": true,
+						"description": "show icon for 'Toggle terminal'"
+					},
+					"Toggle activity bar": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Toggle activity bar'"
+					},
+					"Quick open": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for Go to File, 'Quick Open'"
+					},
+					"Find replace": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Find/Replace in active file'"
+					},
+					"Undo": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Undo'"
+					},
+					"Redo": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Redo'"
+					},
+					"Toggle line comment": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Toggle line comment'"
+					},
+					"Save all": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Save all'"
+					},
+					"Format document with": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Format document with...'"
+					},
+					"Open file": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Open File'"
+					},
+					"New file": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'New File'"
+					},
+					"Go to definition": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Go to definition'"
+					},
+					"Cut": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Cut'"
+					},
+					"Copy": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Copy'"
+					},
+					"Paste": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Paste'"
+					},
+					"Compare with saved": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Compare active file with saved'"
+					},
+					"Open command pallet": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Open command pallet / Show all commands'"
+					},
+					"Start debugging": {
+						"type": "boolean",
+						"default": false,
+						"description": "show icon for 'Start debugging'"
+					},
+					"Love2d_Run": {
+						"type": "boolean",
+						"default": true,
+						"description": "show icon for 'Love2d Run'"
+					}
+				}
+			}
+		],
+		"commands": [
+			{
+				"command": "loveme.love2d",
+				"title": "Love2d Run",
+				"category": "love",
+				"icon": {
+					"light": "images/love2d.png",
+					"dark": "images/love2d.png"
+				}
+			},
+			{
+				"command": "loveme.mainlua",
+				"title": "Create main.lua",
+				"category": "love"
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"when": "config.Love2d_Run",
+					"command": "loveme.love2d",
+					"group": "navigation@26"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "yarn run compile && yarn run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js",
+		"package": "vsce package"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.4",
+		"@types/node": "^12.11.7",
+		"@types/vscode": "^1.51.0",
+		"@typescript-eslint/eslint-plugin": "^4.9.0",
+		"@typescript-eslint/parser": "^4.9.0",
+		"@vscode/vsce": "^3.2.1",
+		"eslint": "^7.15.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.1.3",
+		"openurl": "^1.1.1",
+		"typescript": "^4.1.2",
+		"vscode-test": "^1.4.1"
+	},
+	"packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+	"__metadata": {
+		"installedTimestamp": 1755787095221,
+		"targetPlatform": "universal",
+		"size": 3111501
+	}
+}
